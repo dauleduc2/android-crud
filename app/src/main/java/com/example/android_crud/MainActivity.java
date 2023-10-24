@@ -1,8 +1,11 @@
 package com.example.android_crud;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -12,15 +15,31 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     ListView listView;
     List<Product> data;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.list_view);
         createData();
         DataAdapter arr = new DataAdapter(this, R.layout.data_item, data);
         listView.setAdapter(arr);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        return super.onOptionsItemSelected(item);
     }
 
     private void createData(){
