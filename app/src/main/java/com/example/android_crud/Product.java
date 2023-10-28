@@ -1,6 +1,7 @@
 package com.example.android_crud;
 
 public class Product {
+    int ID;
     String title;
     String description;
     double price;
@@ -12,6 +13,21 @@ public class Product {
         this.title = title;
         this.description = description;
         this.price = price;
+    }
+
+    public Product(int ID, String title, String description, double price) {
+        this.ID = ID;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getTitle() {
@@ -36,5 +52,14 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString(){
+        return "Product{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
