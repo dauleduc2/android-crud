@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -33,9 +35,23 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list_view);
 
         DataAdapter arr = new DataAdapter(this, R.layout.data_item, data);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Context context = view.getContext();
+
+                Intent addForm = new Intent(context, AddForm.class);
+                addForm.putExtra("mode", "edit");
+                addForm.putExtra("id", data.get(i).ID);
+                goToAddForm.launch(addForm);
+            }
+        });
         listView.setAdapter(arr);
 
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(itemId == R.id.add){
             Intent addForm = new Intent(this, AddForm.class);
+            addForm.putExtra("mode", "add");
             goToAddForm.launch(addForm);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -80,16 +98,5 @@ public class MainActivity extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
         getData();
-    }
-
-    private void createData(){
-        data = new ArrayList<Product>();
-        data.add(new Product(1,"Java", "Language 1", 50));
-        data.add(new Product(2,"JavaScript", "Language 2", 4));
-        data.add(new Product(3,"Docker", "Language 31", 2));
-        data.add(new Product(4,"ReactJS", "Language 4", 3));
-        data.add(new Product(5,"TypeScript", "Language 5", 55));
-        data.add(new Product(6,"Kotlin", "Language 6", 13));
-        data.add(new Product(7,"Ruby on rail", "Language 6", 13));
     }
 }

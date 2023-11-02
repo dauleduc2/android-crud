@@ -2,21 +2,28 @@ package com.example.android_crud;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.w3c.dom.Text;
+
 public class AddForm extends AppCompatActivity {
+    TextView textHead;
     DatabaseHandler db;
     EditText title;
     EditText description;
     EditText price;
     Button btnAdd;
-
+    int ID;
+    String mode;
+    Product currentProduct;
 
 
     private boolean validate(String titleText, String descriptionText, String priceText){
@@ -49,7 +56,9 @@ public class AddForm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Intent currentIntent = getIntent();
+        this.mode = currentIntent.getStringExtra("mode");
+        this.ID = currentIntent.getIntExtra("id", 0);
         db = new DatabaseHandler(this);
 
         setContentView(R.layout.add_form);
@@ -57,6 +66,19 @@ public class AddForm extends AppCompatActivity {
         description = findViewById(R.id.description);
         price = findViewById(R.id.price);
         btnAdd = findViewById(R.id.submit);
+        textHead = findViewById(R.id.head_text);
+
+        if(this.mode.equals("edit")){
+            currentProduct = db.getProduct(this.ID);
+            btnAdd.setText("Update");
+            textHead.setText("Edit Product");
+
+//            set initial value to the form
+            title.setText(currentProduct.title);
+            description.setText(currentProduct.description);
+            price.setText(String.valueOf(currentProduct.price));
+
+        }
 
         btnAdd.setOnClickListener(new View.OnClickListener(){
 
@@ -72,7 +94,14 @@ public class AddForm extends AppCompatActivity {
                 }
 
                 Product product = new Product(titleText, descriptionText, Double.parseDouble(priceText));
-                db.addProduct(product);
+
+                if(mode.equals("edit")){
+                    product.ID = ID;
+                    db.updateProduct(product);
+                }else{
+                    db.addProduct(product);
+                }
+
                 setResult(Activity.RESULT_OK);
                 finish();
             }
