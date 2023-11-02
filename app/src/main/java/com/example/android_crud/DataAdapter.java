@@ -1,12 +1,15 @@
 package com.example.android_crud;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +44,29 @@ public class DataAdapter extends ArrayAdapter<Product> {
             product.title = (TextView)row.findViewById(R.id.title);
             product.description = (TextView)row.findViewById(R.id.description);
             product.price = (TextView)row.findViewById(R.id.price);
+            product.btnDelete = (Button)row.findViewById(R.id.deleteButton);
+
+            product.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    new AlertDialog.Builder(context)
+                            .setTitle("Are you sure?")
+                            .setMessage("Do you really want to delete this product?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    DatabaseHandler db = new DatabaseHandler(context);
+                                    db.deleteProduct(items.get(position).ID);
+                                    items.remove(position);
+                                    notifyDataSetChanged();
+                                }})
+                            .setNegativeButton(android.R.string.no, null).show();
+
+
+                }
+            });
 
             row.setTag(product);
         }else{
@@ -60,7 +86,7 @@ public class DataAdapter extends ArrayAdapter<Product> {
         TextView title;
         TextView description;
         TextView price;
-
+        Button btnDelete;
 
     }
 }

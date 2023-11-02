@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     List<Product> data;
     DatabaseHandler db;
-
 
     private void getData(){
         data = db.getAllProduct();
